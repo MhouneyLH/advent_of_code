@@ -201,5 +201,36 @@ int main(int argc, char *argv[])
 
     std::cout << "Result: " << idSum << std::endl;
 
+    int powerSum = 0;
+    for (Game game : games)
+    {
+        const std::list<std::list<Cube>> cubeSets = game.getCubeSets();
+        int maxRedNumber = 0;
+        int maxGreenNumber = 0;
+        int maxBlueNumber = 0;
+
+        for (const std::list<Cube> &cubeSet : cubeSets)
+        {
+            for (const Cube &cube : cubeSet)
+            {
+                if (cube.color == Color::RED && cube.amount > maxRedNumber)
+                {
+                    maxRedNumber = cube.amount;
+                }
+                else if (cube.color == Color::GREEN && cube.amount > maxGreenNumber)
+                {
+                    maxGreenNumber = cube.amount;
+                }
+                else if (cube.color == Color::BLUE && cube.amount > maxBlueNumber)
+                {
+                    maxBlueNumber = cube.amount;
+                }
+            }
+        }
+        powerSum += maxRedNumber * maxGreenNumber * maxBlueNumber;
+    }
+
+    std::cout << "Result: " << powerSum << std::endl;
+
     return EXIT_SUCCESS;
 }
