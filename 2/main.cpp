@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+#include "../inputReader.h"
 
 int main(int argc, char *argv[])
 {

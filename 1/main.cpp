@@ -1,36 +1,9 @@
 #include <iostream>
-#include <fstream>
 #include <list>
+#include "../inputReader.h"
 
 static const std::string INPUT_FILE_PATH = "input.txt";
-
-std::list<std::string> getInputAsLines(std::istream &inputFile)
-{
-    std::list<std::string> lines;
-
-    std::string line;
-    while (std::getline(inputFile, line))
-    {
-        lines.push_back(line);
-    }
-
-    return lines;
-}
-
-std::list<std::string> getInputFromFile(const std::string &relativePathToFile)
-{
-    std::ifstream inputFile(relativePathToFile);
-    if (!inputFile.is_open())
-    {
-        std::cerr << "Error opening file: " << relativePathToFile << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    const std::list<std::string> lines = getInputAsLines(inputFile);
-    inputFile.close();
-
-    return lines;
-}
+static const char DEFAULT_NUMBER_AS_CHAR = '0';
 
 char getFirstNumberAsCharInLine(const std::string &line)
 {
@@ -43,7 +16,7 @@ char getFirstNumberAsCharInLine(const std::string &line)
         }
     }
 
-    return '0';
+    return DEFAULT_NUMBER_AS_CHAR;
 }
 
 char getLastNumberAsCharInLine(const std::string &line)
@@ -53,14 +26,13 @@ char getLastNumberAsCharInLine(const std::string &line)
     // und end() immer das Element nach dem letzten Element
     for (auto it = line.rbegin(); it != line.rend(); it++)
     {
-        std::cout << *it << std::endl;
         if (std::isdigit(*it))
         {
             return *it;
         }
     }
 
-    return '0';
+    return DEFAULT_NUMBER_AS_CHAR;
 }
 
 int getSummedNumbersFromInput(const std::list<std::string> &input)
