@@ -1,0 +1,12 @@
+{
+  "name": "Go",
+  "image": "mcr.microsoft.com/vscode/devcontainers/go:1.23",
+  "customizations": {
+    "vscode": {
+      "extensions": ["golang.go", "esbenp.prettier-vscode", "aaron-bond.better-comments"],
+      "settings": {
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}
