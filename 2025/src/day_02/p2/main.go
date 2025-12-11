@@ -7,10 +7,12 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/dlclark/regexp2"
 )
 
 func main() {
-	path := filepath.Join("./input.txt")
+	path := filepath.Join("../input.txt")
 
 	f, err := os.Open(path)
 	if err != nil {
@@ -33,37 +35,21 @@ func main() {
 		temp := strings.Split(r, "-")
 		start, _ := strconv.Atoi(temp[0])
 		end, _ := strconv.Atoi(temp[1])
-		var ran Range = Range{
-			start: start,
-			end:   end,
-		}
-		ranges = append(ranges, ran)
+		ranges = append(ranges, Range{start, end})
 	}
 
-	fmt.Println(ranges)
+	// \d keep capturing digits -> capture group
+	// \1 possible to match capture group 1 many possible times
+	// sadly the standard library regexp does not support back references
+	var pattern *regexp2.Regexp = regexp2.MustCompile(`^(\d+)\1+$`, regexp2.None)
 
 	var invalidIds []int
 	for _, r := range ranges {
 		for id := r.start; id <= r.end; id++ {
 			var c string = strconv.Itoa(id)
-			mid := len(c) / 2
-			// number of digits must be even so that we can split nicely
-			if len(c)%2 != 0 {
-				continue
-			}
 
-			var invalid bool = true
-			for i := 0; i < mid; i++ {
-				e1 := c[i]
-				e2 := c[i+mid]
-				if e1 != e2 {
-					invalid = false
-				}
-			}
-
-			if invalid {
-				elem, _ := strconv.Atoi(c)
-				invalidIds = append(invalidIds, elem)
+			if isMatch, _ := pattern.MatchString(c); isMatch {
+				invalidIds = append(invalidIds, id)
 			}
 		}
 	}
